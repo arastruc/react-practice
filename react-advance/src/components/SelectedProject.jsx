@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import TaskItem from "./TaskItem";
 
-const Project = ({ projectData, deleteProject, updateProject }) => {
+const SelectedProject = ({ projectData, deleteProject, updateProject }) => {
   const { title, date, description, tasks } = projectData;
 
   const input = useRef();
@@ -56,4 +56,4 @@ const Project = ({ projectData, deleteProject, updateProject }) => {
   );
 };
 
-export default Project;
+export default SelectedProject;

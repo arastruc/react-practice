@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Project from "./components/Project";
+import SelectedProject from "./components/SelectedProject";
 import { initialProjects } from "./data/data";
 import SideBar from "./components/SideBar";
 import NewProject from "./components/NewProject";
@@ -17,6 +17,17 @@ function App() {
     setProjectState((prev) => ({ ...prev, selectedProject: null }));
   }
 
+  function handleCancel() {
+    setProjectState((prev) => ({ ...prev, selectedProject: undefined }));
+  }
+
+  function handleDelete(projectData) {
+    setProjectState(({ projects }) => ({
+      selectedProject: undefined,
+      projects: projects.filter(({ title }) => projectData.title !== title),
+    }));
+  }
+
   function handleUpdatingProject(projectData) {
     const updatedProject = projects.map((project) => {
       if (projectData.title == project.title) {
@@ -32,11 +43,9 @@ function App() {
   }
 
   function handleSaveProject(projectData) {
-    const updatedProjects = [...projects, projectData];
-
     setProjectState({
       selectedProject: projectData,
-      projects: updatedProjects,
+      projects: [...projects, projectData],
     });
   }
 
@@ -47,21 +56,10 @@ function App() {
     }));
   }
 
-  function handleDelete(projectData) {
-    setProjectState(({ projects }) => ({
-      selectedProject: undefined,
-      projects: projects.filter(({ title }) => projectData.title !== title),
-    }));
-  }
-
-  function handleCancel() {
-    setProjectState((prev) => ({ ...prev, selectedProject: undefined }));
-  }
-
   function displayProject() {
     if (selectedProject !== null && selectedProject !== undefined) {
       return (
-        <Project
+        <SelectedProject
           projectData={selectedProject}
           deleteProject={handleDelete}
           updateProject={handleUpdatingProject}
@@ -88,7 +86,7 @@ function App() {
       </header>
       <main className="flex h-screen gap-8">
         <SideBar
-          projects={projects}
+          projectState={projectState}
           selectProject={handleSelectProject}
           addProject={handleAddProject}
         />
