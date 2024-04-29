@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { createContext, useState } from "react";
+import { DUMMY_PRODUCTS } from "../dummy-products";
 
-import Header from "./components/Header.jsx";
-import Shop from "./components/Shop.jsx";
-import { DUMMY_PRODUCTS } from "./dummy-products.js";
-import { CartContext } from "./store/CartContext.jsx";
+export const CartContext = createContext({
+  items: [],
+  addItemToCart: () => {},
+  updateCartItemQuantity: () => {},
+});
 
-function App() {
+const CartContextProvider = ({ children }) => {
   const [shoppingCart, setShoppingCart] = useState({
     items: [],
   });
@@ -74,10 +76,9 @@ function App() {
         updateCartItemQuantity: handleUpdateCartItemQuantity,
       }}
     >
-      <Header cart={shoppingCart} />
-      <Shop />
+      {children}
     </CartContext.Provider>
   );
-}
+};
 
-export default App;
+export default CartContextProvider;
